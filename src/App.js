@@ -57,15 +57,7 @@ export default function App() {
     console.log("search")
   }
 
-  useEffect(()=>{
-    if(showCart){
-      let filtered = allProducts.filter((each => Object.keys(cart).includes(each._id)))
-      if(!filtered.length){
-        setMsg("Your Cart is Empty")
-      }
-      setProducts(filtered)
-    }
-  },[addToCart])
+  
   function showCartItems(){
     if(!showCart){
       let filtered = allProducts.filter((each => Object.keys(cart).includes(each._id)))
