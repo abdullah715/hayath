@@ -5,7 +5,7 @@ import { Input } from '@material-ui/core';
 import ProductContainer from './components/productContainer'
 import ProductCard from './components/productCard'
 import AppBar from './components/appBar'
-
+import productJson from './products'
 import CartContext from './hooks/CartContext.js'
 
 //context
@@ -43,27 +43,32 @@ export default function App() {
   const[searchVal,setSearchVal] = useState("");
 
   useEffect(()=>{
-    const url = 'https://randomuser.me/api/?results=200'; // Get 10 random users
-
-    fetch(url)
-    .then(response => response.json())
-    .then((res)=>{
-      setAllProducts(res.results)
-      setProducts(res.results)
-      })
+   
+      setAllProducts(productJson)
+      setProducts(productJson)
+     
   },[])
 
   function search(e){
     const {value} = e.target;
     setSearchVal(value)
-    let filtered = allProducts.filter((each)=> each.name.first.includes(value))
+    let filtered = allProducts.filter((each)=> each.name.includes(value))
     setProducts(filtered)
     console.log("search")
   }
 
+  useEffect(()=>{
+    if(showCart){
+      let filtered = allProducts.filter((each => Object.keys(cart).includes(each._id)))
+      if(!filtered.length){
+        setMsg("Your Cart is Empty")
+      }
+      setProducts(filtered)
+    }
+  },[addToCart])
   function showCartItems(){
     if(!showCart){
-      let filtered = allProducts.filter((each => Object.keys(cart).includes(each.login.uuid)))
+      let filtered = allProducts.filter((each => Object.keys(cart).includes(each._id)))
       if(!filtered.length){
         setMsg("Your Cart is Empty")
       }

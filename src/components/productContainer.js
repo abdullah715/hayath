@@ -42,29 +42,32 @@ export default function ProductContainer(props){
     loader={<div className="loader" key={0}>Loading ...</div>}
 >
     {items.map((each,index)=>{
-    const {first,last} =  each.name;
-    const id = each.login.uuid
+    const id = each._id
     console.log(cartItems.includes(id))
 
     if(Object.keys(props.itemsInCart).includes(id)){
      return (
       <ProductCard 
         key={index}
-        name={first+" "+last}
-        uuid={each.login.uuid}
-        image={each.picture.medium}
+        name={each.name}
+        uuid={each._id}
+        image={}
+        price={each.price}
+        saleType={each.saleType}
         inCart={true}
-        amt = {props.itemsInCart[each.login.uuid].amt}
-        qty = {props.itemsInCart[each.login.uuid].qty}
+        amt = {props.itemsInCart[each._id].amt}
+        qty = {props.itemsInCart[each._id].qty}
         />
       ) 
     }else{
       return (
       <ProductCard 
         key={index}
-        name={first+" "+last}
-        uuid={each.login.uuid}
-        image={each.picture.medium}
+        name={each.name}
+        uuid={each._id}
+        image={}
+        price={each.price}
+        saleType={each.saleType}
         inCart={false}
         amt={0}
         qty={0}

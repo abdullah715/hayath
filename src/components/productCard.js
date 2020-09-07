@@ -44,7 +44,8 @@ const useStyles = makeStyles((theme) => ({
   inp:{
     maxWidth:"75px",
     margin:"2px 10px"
-  }
+  },
+  
 }));
 
 Number.prototype.before = function () {
@@ -62,6 +63,14 @@ export default function ProductCard(props) {
   const {cart,addToCart,removeFromCart} = useContext(CartContext)
   
   const classes = useStyles();
+  let inpContainer = {
+    display:"flex"}
+  if(props.saleType == 'weight'){
+    inpContainer.justifyContent = "space-around"
+  }else{
+    inpContainer.justifyContent = "space-evenly"
+  }
+
   const [kg,setKg] = useState(0)
   const [gram,setGram] = useState(0)
   const [qty,setQty] = useState(0)
@@ -79,7 +88,7 @@ export default function ProductCard(props) {
   },[kg,gram])
 
   useEffect(()=>{
-    setAmt(()=>(qty*100))
+    setAmt(()=>(qty*props.price))
   },[qty])
 
   useEffect(()=>{
@@ -117,8 +126,11 @@ export default function ProductCard(props) {
           <Grid item >
           <Grid item container direction="column" spacing={2}>
               <Grid item xs>
-                <Typography gutterBottom variant="subtitle1">
+                <Typography gutterBottom variant="body2" style={{width:window.innerWidth*(0.45)}}>
                   {props.name}
+                </Typography>
+                 <Typography variant="body2" gutterBottom>
+                  Price: {props.price} 
                 </Typography>
                 <Typography variant="body2" gutterBottom>
                   Qty : {qty}
@@ -126,17 +138,15 @@ export default function ProductCard(props) {
                  <Typography variant="body2" gutterBottom>
                   Amout : {amt}
                 </Typography>
-                <Typography variant="body2" color="textSecondary">
-                  ID: {props.uuid.slice(0,10)}
-                </Typography>
+               
               </Grid>
 
             </Grid>
           </Grid>
           </Grid>
           
-          <Grid xs="12"  style={{margin:"12px 0px 0"}}>
-          <div  style={{display:"flex",justifyContent:"space-between"}}>
+          <Grid style={{margin:"12px 0px 0"}}>
+          <div  style={inpContainer}>
             <div className={classes.input}>
 
             <ButtonBase>
@@ -148,7 +158,8 @@ export default function ProductCard(props) {
              </ButtonBase>
             </div>
           
-             <div className={classes.input}>
+            {props.saleType == 'weight' && (
+          <div className={classes.input}>
              <ButtonBase>
               <AddIcon onClick={()=>(increment("gram"))}/>
              </ButtonBase>
@@ -159,6 +170,8 @@ export default function ProductCard(props) {
              </ButtonBase>
             
             </div>
+            )}
+            
 
           </div>
           </Grid>
