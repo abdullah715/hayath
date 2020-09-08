@@ -15,6 +15,9 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';import Notificati
 import MoreIcon from '@material-ui/icons/MoreVert';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
+import CartContext from '../hooks/CartContext.js'
+
+
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
@@ -80,6 +83,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function PrimarySearchAppBar(props) {
+    const {cart} = React.useContext(CartContext)
+
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -206,7 +211,7 @@ export default function PrimarySearchAppBar(props) {
             
         <IconButton aria-label="show 4 new mails" color="inherit" onClick={props.showCart}>
         
-          <Badge badgeContent={props.cartCount} color={props.showingCart ? 'Show All' : 'secondary'}>
+          <Badge badgeContent={Object.keys(cart).length} color={props.showingCart ? 'Show All' : 'secondary'}>
             <ShoppingCartIcon  />
           </Badge>
         </IconButton>

@@ -77,10 +77,13 @@ export default function ProductCard(props) {
   const [amt,setAmt] = useState(0)
  
   useEffect(()=>{
+    if(props.inCart){
       setAmt(()=>(props.amt))
       setQty(()=>(props.qty))
       setKg(()=>(props.qty.before()))
       setGram(()=>((props.qty-props.qty.before())*1000))
+    }
+     
   },[props.qty,props.amt])
 
   useEffect(()=>{
@@ -98,6 +101,7 @@ export default function ProductCard(props) {
         removeFromCart(props.uuid)
       }
   },[amt])
+  
   function increment(type){
     if(type=='kg'){
       setKg(prev=>  prev+1)

@@ -2,14 +2,18 @@ import React, {useState,useEffect} from "react";
 import ProductCard from './productCard'
 import InfiniteScroll from 'react-infinite-scroller';
 
+import CartContext from '../hooks/CartContext.js'
+
 
 export default function ProductContainer(props){
+  const {cart} = React.useContext(CartContext)
 
 
   const [items,setItems] = useState([])
   const [hasMore,setHasMore] =useState(true)
   const [limit,setLimit] = useState(5)
-  const cartItems = Object.keys(props.itemsInCart)
+  const cartItems = Object.keys(cart)
+  
   function loadFunc(){
     console.log(limit)
     if(props.itemsToShow.length >= limit){
@@ -43,9 +47,8 @@ export default function ProductContainer(props){
 >
     {items.map((each,index)=>{
     const id = each._id
-    console.log(cartItems.includes(id))
 
-    if(Object.keys(props.itemsInCart).includes(id)){
+    if(Object.keys(cart).includes(id)){
      return (
       <ProductCard 
         key={index}
@@ -55,8 +58,8 @@ export default function ProductContainer(props){
         price={each.price}
         saleType={each.saleType}
         inCart={true}
-        amt = {props.itemsInCart[each._id].amt}
-        qty = {props.itemsInCart[each._id].qty}
+        amt = {cart[each._id].amt}
+        qty = {cart[each._id].qty}
         />
       ) 
     }else{

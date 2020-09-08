@@ -24,18 +24,13 @@ export default function App() {
     console.log(id,qty,amt)
     let newItem = {[id]:{qty,amt}}
     setCart(prevCart=>({...prevCart,...newItem}))
-    setCartCount(Object.keys(cart).length)
 
-    return 
   }
 
   async function removeFromCart(id){
     let newCart = cart
     await delete newCart[id]
-    console.log(newCart)
-    setCart( prevCart => newCart)
-    setCartCount(Object.keys(cart).length)
-    return 
+    let resp = setCart(newCart)
   }
 
   document.body.style.background = "url('https://i.pinimg.com/564x/14/44/16/1444163f3e80c424df57abc9bd259b31.jpg') no-repeat";
@@ -72,6 +67,7 @@ export default function App() {
   }
   
   function showCartItems(){
+
     if(!showCart){
       let filtered = allProducts.filter((each => Object.keys(cart).includes(each._id)))
       if(!filtered.length){
@@ -94,13 +90,13 @@ export default function App() {
     //Products container
         //each productCard
     <CartContext.Provider value={{cart,addToCart,removeFromCart}}>
-    <AppBar cartCount={cartCount} searchFn={search} searchVal={searchVal} handleCheckout={handleCheckout} showCart={showCartItems} showingCart={showCart} />
+    <AppBar searchFn={search} searchVal={searchVal} handleCheckout={handleCheckout} showCart={showCartItems} showingCart={showCart} />
     <div style={{margin:"70px 0px"}}>
     
     {products.length != 0 ? 
     (
       <div>
-        <ProductContainer itemsToShow={products} cartCount={cartCount} itemsInCart={cart}/>
+        <ProductContainer itemsToShow={products}  />
       </div>
       
     ):(
