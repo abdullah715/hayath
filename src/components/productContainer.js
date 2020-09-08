@@ -51,7 +51,7 @@ export default function ProductContainer(props){
         key={index}
         name={each.name}
         uuid={each._id}
-        image={}
+        image={"https://royalspace.online/images/"+each._id+".png"}
         price={each.price}
         saleType={each.saleType}
         inCart={true}
@@ -65,7 +65,7 @@ export default function ProductContainer(props){
         key={index}
         name={each.name}
         uuid={each._id}
-        image={}
+        image={"https://royalspace.online/images/"+each._id+".png"}
         price={each.price}
         saleType={each.saleType}
         inCart={false}
