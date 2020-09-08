@@ -60,7 +60,7 @@ Number.prototype.after = function () {
 
 export default function ProductCard(props) {
 
-  const {cart,addToCart,removeFromCart} = useContext(CartContext)
+  const {cart,setCart} = useContext(CartContext)
   
   const classes = useStyles();
   let inpContainer = {
@@ -77,30 +77,45 @@ export default function ProductCard(props) {
   const [amt,setAmt] = useState(0)
  
   useEffect(()=>{
-    if(props.inCart){
-      setAmt(()=>(props.amt))
-      setQty(()=>(props.qty))
-      setKg(()=>(props.qty.before()))
-      setGram(()=>((props.qty-props.qty.before())*1000))
+
+    if(cart[props.uuid]){
+      console.log(cart[props.uuid])
+      // setAmt(()=>(cart[props.uuid].amt))
+      // setQty(()=>(cart[props.uuid].qty))
+      // setKg(()=>(cart[props.uuid].qty.before()))
+      // setGram(()=>((cart[props.uuid].qty-props.qty.before())*1000))
     }
-     
-  },[props.qty,props.amt])
+  },[])
 
   useEffect(()=>{
     setQty(()=>(kg+(gram/1000)))
   },[kg,gram])
 
   useEffect(()=>{
-    setAmt(()=>(qty*props.price))
+    let calcAmt = qty*props.price
+    setAmt(()=>(calcAmt))
+    if(qty == 0){
+      removeFromCart(props.uuid)
+    }
+    if(qty > 0){
+      addToCart(props.uuid,qty,calcAmt)
+    }
   },[qty])
 
-  useEffect(()=>{
-      if(amt > 0){
-        addToCart(props.uuid,qty,amt)
-      }else{
-        removeFromCart(props.uuid)
+    function addToCart(id,qty,amt){
+        console.log(id,qty,amt)
+        let newItem = {[id]:{qty,amt}}
+        setCart(prevCart=>({...prevCart,...newItem}))
+
       }
-  },[amt])
+
+    async function removeFromCart(id){
+      console.log("removing")
+      let newCart = cart
+      await delete newCart[id]
+      let resp = setCart(newCart)
+    }
+    
   
   function increment(type){
     if(type=='kg'){

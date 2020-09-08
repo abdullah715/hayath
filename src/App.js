@@ -20,18 +20,7 @@ export default function App() {
   const [showCart,setShowCart] = useState(false)
   const [msg,setMsg] = useState('Loading Shop')
 
-  function addToCart(id,qty,amt){
-    console.log(id,qty,amt)
-    let newItem = {[id]:{qty,amt}}
-    setCart(prevCart=>({...prevCart,...newItem}))
-
-  }
-
-  async function removeFromCart(id){
-    let newCart = cart
-    await delete newCart[id]
-    let resp = setCart(newCart)
-  }
+  
 
   document.body.style.background = "url('https://i.pinimg.com/564x/14/44/16/1444163f3e80c424df57abc9bd259b31.jpg') no-repeat";
   document.body.style.backgroundSize="cover"
@@ -89,7 +78,7 @@ export default function App() {
 
     //Products container
         //each productCard
-    <CartContext.Provider value={{cart,addToCart,removeFromCart}}>
+    <CartContext.Provider value={{cart,setCart}}>
     <AppBar searchFn={search} searchVal={searchVal} handleCheckout={handleCheckout} showCart={showCartItems} showingCart={showCart} />
     <div style={{margin:"70px 0px"}}>
     

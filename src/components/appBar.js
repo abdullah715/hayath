@@ -83,11 +83,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function PrimarySearchAppBar(props) {
-    const {cart} = React.useContext(CartContext)
+    const {cart,setCart} = React.useContext(CartContext)
 
   const classes = useStyles();
+  const [noItems,setNoItems] = React.useState(0)
+  React.useEffect(()=>{
+    setNoItems(Object.keys(cart).length)
+  },[Object.keys(cart).length,setCart])
+
+
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -211,7 +219,7 @@ export default function PrimarySearchAppBar(props) {
             
         <IconButton aria-label="show 4 new mails" color="inherit" onClick={props.showCart}>
         
-          <Badge badgeContent={Object.keys(cart).length} color={props.showingCart ? 'Show All' : 'secondary'}>
+          <Badge badgeContent={noItems} color={props.showingCart ? 'Show All' : 'secondary'}>
             <ShoppingCartIcon  />
           </Badge>
         </IconButton>

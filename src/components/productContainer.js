@@ -48,7 +48,7 @@ export default function ProductContainer(props){
     {items.map((each,index)=>{
     const id = each._id
 
-    if(Object.keys(cart).includes(id)){
+   
      return (
       <ProductCard 
         key={index}
@@ -56,27 +56,10 @@ export default function ProductContainer(props){
         uuid={each._id}
         image={"https://royalspace.online/images/"+each._id+".png"}
         price={each.price}
-        saleType={each.saleType}
-        inCart={true}
-        amt = {cart[each._id].amt}
-        qty = {cart[each._id].qty}
+        saleType={each.saleType}        
         />
       ) 
-    }else{
-      return (
-      <ProductCard 
-        key={index}
-        name={each.name}
-        uuid={each._id}
-        image={"https://royalspace.online/images/"+each._id+".png"}
-        price={each.price}
-        saleType={each.saleType}
-        inCart={false}
-        amt={0}
-        qty={0}
-        />
-      ) 
-    }
+    
       
     })} 
 </InfiniteScroll>
