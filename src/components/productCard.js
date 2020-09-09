@@ -71,10 +71,10 @@ export default function ProductCard(props) {
     inpContainer.justifyContent = "space-evenly"
   }
 
-  const [kg,setKg] = useState(0)
+  const [kg,setKg] = useState(props.qty.before())
   const [gram,setGram] = useState(0)
-  const [qty,setQty] = useState(0)
-  const [amt,setAmt] = useState(0)
+  const [qty,setQty] = useState(props.qty)
+  const [amt,setAmt] = useState(props.amt)
  
   useEffect(()=>{
 

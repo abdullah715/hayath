@@ -183,6 +183,7 @@ export default function PrimarySearchAppBar(props) {
             </div>
             <InputBase
               placeholder="Search…"
+              autoFocus
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,

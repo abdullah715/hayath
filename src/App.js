@@ -85,7 +85,7 @@ export default function App() {
     {products.length != 0 ? 
     (
       <div>
-        <ProductContainer itemsToShow={products}  />
+        <ProductContainer itemsToShow={products} cart={cart} />
       </div>
       
     ):(

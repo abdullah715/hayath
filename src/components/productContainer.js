@@ -37,6 +37,7 @@ export default function ProductContainer(props){
       setHasMore(false)
     }
   },[props.itemsToShow])
+  
   return (
     <div>
     <InfiniteScroll
@@ -56,7 +57,10 @@ export default function ProductContainer(props){
         uuid={each._id}
         image={"https://royalspace.online/images/"+each._id+".png"}
         price={each.price}
-        saleType={each.saleType}        
+        saleType={each.saleType}
+        inCart={true}
+        amt = {props.cart[each._id] ? cart[each._id].amt : 0}
+        qty = {props.cart[each._id] ? cart[each._id].qty : 0}
         />
       ) 
     
