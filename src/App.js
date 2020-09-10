@@ -6,16 +6,18 @@ import ProductContainer from './components/productContainer'
 import ProductCard from './components/productCard'
 import AppBar from './components/appBar'
 import Form from './components/checkoutDialog'
+import Alert from './components/alertDialog'
 import productJson from './products'
 import CartContext from './hooks/CartContext.js'
 
 //context
-
+const minPurchase = 200;
 
 export default function App() {
 
   const [cart,setCart] = useState({})
   const [showForm,setShowForm] = useState(false)
+  const [showAlert,setShowAlert] = useState({state:false,msg:""})
   const [cartCount,setCartCount] = useState(0)
   const [showCart,setShowCart] = useState(false)
   const [msg,setMsg] = useState('Loading Shop')
@@ -39,20 +41,46 @@ export default function App() {
      
   },[])
 
+  
   function search(e){
     const {value} = e.target;
+    setShowCart(false)
     setSearchVal(value)
     let filtered = allProducts.filter((each)=> each.name.includes(value))
     setProducts(filtered)
+    if(!Object.keys(filtered).length){
+      setMsg("Item not found")
+    }
     console.log("search")
   }
 
   const handleCheckout = ()=>{
-    setShowForm(true)
+    calcTotal().then((sum)=>{
+      if(sum > minPurchase){
+        setShowForm(true)
+      }
+
+      if(sum < minPurchase){
+       setShowAlert({state:true,msg:"Cart Total is less than "+minPurchase}) 
+      }
+
+      if(sum == 0){
+        setShowAlert({state:true,msg:"Your Cart is Empty"})
+      }
+    })
+    
+  }
+
+  async function calcTotal(){
+    return Object.entries(cart).reduce((add,each)=> add + each[1].amt,0)
   }
 
   const handleClose = ()=>{
      setShowForm(false)
+  }
+
+  const handleAlertClose = ()=>{
+     setShowAlert({state:false,msg:""})
   }
   
   function showCartItems(){
@@ -71,6 +99,9 @@ export default function App() {
     
   }
 
+  function updateCount(count){
+    setCartCount(count)
+  }
   return (
         // Navigation bar 
     //     Cart and checkout Button
@@ -78,8 +109,14 @@ export default function App() {
 
     //Products container
         //each productCard
-    <CartContext.Provider value={{cart,setCart}}>
-    <AppBar searchFn={search} searchVal={searchVal} handleCheckout={handleCheckout} showCart={showCartItems} showingCart={showCart} />
+    <CartContext.Provider value={{cart,setCart,updateCount}}>
+    <AppBar 
+    searchFn={search} 
+    searchVal={searchVal} 
+    handleCheckout={handleCheckout} 
+    showCart={showCartItems} 
+    showingCart={showCart} 
+    noItems={cartCount}/>
     <div style={{margin:"70px 0px"}}>
     
     {products.length != 0 ? 
@@ -97,6 +134,7 @@ export default function App() {
     
     </div>
     <Form show={showForm} handleClose={handleClose}/>
+    <Alert show={showAlert} handleClose={handleAlertClose}/>
     </CartContext.Provider>
   );
 }

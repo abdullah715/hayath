@@ -87,9 +87,7 @@ export default function PrimarySearchAppBar(props) {
 
   const classes = useStyles();
   const [noItems,setNoItems] = React.useState(0)
-  React.useEffect(()=>{
-    setNoItems(Object.keys(cart).length)
-  },[Object.keys(cart).length,setCart])
+  
 
 
 
@@ -117,6 +115,9 @@ export default function PrimarySearchAppBar(props) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  React.useEffect(()=>{
+    setNoItems(props.noItems)
+  },[props.noItems])
   
   const menuId = 'primary-search-account-menu';
   const renderMenu = (

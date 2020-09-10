@@ -60,7 +60,7 @@ Number.prototype.after = function () {
 
 export default function ProductCard(props) {
 
-  const {cart,setCart} = useContext(CartContext)
+  const {cart,setCart,updateCount} = useContext(CartContext)
   
   const classes = useStyles();
   let inpContainer = {
@@ -76,16 +76,7 @@ export default function ProductCard(props) {
   const [qty,setQty] = useState(props.qty)
   const [amt,setAmt] = useState(props.amt)
  
-  useEffect(()=>{
-
-    if(cart[props.uuid]){
-      console.log(cart[props.uuid])
-      // setAmt(()=>(cart[props.uuid].amt))
-      // setQty(()=>(cart[props.uuid].qty))
-      // setKg(()=>(cart[props.uuid].qty.before()))
-      // setGram(()=>((cart[props.uuid].qty-props.qty.before())*1000))
-    }
-  },[])
+  
 
   useEffect(()=>{
     setQty(()=>(kg+(gram/1000)))
@@ -98,14 +89,15 @@ export default function ProductCard(props) {
       removeFromCart(props.uuid)
     }
     if(qty > 0){
-      addToCart(props.uuid,qty,calcAmt)
+      addToCart(props.uuid,qty,calcAmt,props.name)
     }
   },[qty])
 
-    function addToCart(id,qty,amt){
-        console.log(id,qty,amt)
-        let newItem = {[id]:{qty,amt}}
+    function addToCart(id,qty,amt,name){
+        console.log(id,qty,amt,name)
+        let newItem = {[id]:{qty,amt,name}}
         setCart(prevCart=>({...prevCart,...newItem}))
+        updateCount(Object.keys({...cart,...newItem}).length);
 
       }
 
@@ -114,6 +106,7 @@ export default function ProductCard(props) {
       let newCart = cart
       await delete newCart[id]
       let resp = setCart(newCart)
+        updateCount(Object.keys(cart).length);
     }
     
   
@@ -132,6 +125,22 @@ export default function ProductCard(props) {
     setGram(prev=> prev<=0 ? 0 : prev-250)
     }
   }
+
+useEffect(()=>{
+
+    if(cart[props.uuid]){
+      console.log(cart[props.uuid])
+      setAmt(()=>(cart[props.uuid].amt))
+      setQty(()=>(cart[props.uuid].qty))
+      setKg(()=>(cart[props.uuid].qty.before()))
+      setGram(()=>((cart[props.uuid].qty-props.qty.before())*1000))
+    }else{
+      setAmt(0)
+      setQty(0)
+      setKg(0)
+      setGram(0)
+    }
+  },[cart[props.uuid]])
 
   return (
     <div className={classes.root}>
