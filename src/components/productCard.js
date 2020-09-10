@@ -90,6 +90,7 @@ export default function ProductCard(props) {
     }
     if(qty > 0){
       addToCart(props.uuid,qty,calcAmt,props.name)
+      
     }
   },[qty])
 

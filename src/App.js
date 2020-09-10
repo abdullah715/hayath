@@ -1,4 +1,5 @@
 import React,{useEffect,useState,createContext, useContext,forceUpdate} from "react";
+import Container from '@material-ui/core/Container';
 import { Button } from '@material-ui/core';
 import "./style.css";
 import { Input } from '@material-ui/core';
@@ -110,6 +111,7 @@ export default function App() {
     //Products container
         //each productCard
     <CartContext.Provider value={{cart,setCart,updateCount}}>
+    <Container maxWidth="sm">
     <AppBar 
     searchFn={search} 
     searchVal={searchVal} 
@@ -135,6 +137,7 @@ export default function App() {
     </div>
     <Form show={showForm} handleClose={handleClose}/>
     <Alert show={showAlert} handleClose={handleAlertClose}/>
+    </Container>
     </CartContext.Provider>
   );
 }
