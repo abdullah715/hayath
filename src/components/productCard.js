@@ -155,7 +155,7 @@ useEffect(()=>{
           <Grid item >
           <Grid item container direction="column" spacing={2}>
               <Grid item xs>
-                <Typography gutterBottom variant="body2" style={{width:window.innerWidth*(0.45)}}>
+                <Typography gutterBottom variant="h6" style={{width:window.innerWidth*(0.45)}}>
                   {props.name}
                 </Typography>
                  <Typography variant="body2" gutterBottom>
