@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
+import LazyLoad from 'react-lazyload';
 
 import CartContext from '../hooks/CartContext.js'
 
@@ -75,6 +76,8 @@ export default function ProductCard(props) {
   const [gram,setGram] = useState(0)
   const [qty,setQty] = useState(props.qty)
   const [amt,setAmt] = useState(props.amt)
+  const [imgErr,setImgErr] = useState(false)
+  const [image,setImage] = useState("https://media.tenor.com/images/67d17766117cca8152040f688609472b/tenor.gif")
  
   
 
@@ -127,6 +130,11 @@ export default function ProductCard(props) {
     }
   }
 
+  function errorImage(){
+    setImgErr(true)
+    setImage("https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png")
+  }
+
 useEffect(()=>{
 
     if(cart[props.uuid]){
@@ -149,7 +157,13 @@ useEffect(()=>{
         <Grid container spacing={2}>
           <Grid item  >
             <div>
-            <img className={classes.img} alt="complex" src={props.image} />
+                  <LazyLoad once offset={100}>
+
+            <img className={classes.img} alt="complex" src={image} 
+            onError={errorImage}
+            onLoad={imgErr ? null :()=>setImage(props.image)}
+            />
+            </LazyLoad>
             </div>
           </Grid>
           <Grid item >
